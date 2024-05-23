@@ -1,19 +1,17 @@
 export interface IBasket {
   items: Map<string, number>;
-  add(card: ICard): void;
+  add(card: ICardItem): void;
   remove(id: string): void; 
   totalPrice(prices: number[]): number;
   /// реализовать геттер и сеттер, чтобы обеспечить доступ к элементам корзины и их изменение с помощью методов, 
   /// а не напрямую. Также можно добавить геттер для получения общего количества товаров в корзине.
 } 
 
-export interface ICardsData {
-  cards: ICard[];
-  loadCardCollection(): Promise<void>;
-  openCard (card: ICard): void;
+export interface ICardsList {
+  setCards(cards: ICardItem[]): void;
 }
 
-export interface ICard {
+export interface ICardItem {
    id: string;
    title: string;
    price: number;
