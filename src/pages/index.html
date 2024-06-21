@@ -38,7 +38,7 @@
 			</div>
 		</div>
 	</div>
-
+<!-- 
 	<div class="modal">
 		<div class="modal__container">
 			<button class="modal__close" aria-label="закрыть"></button>
@@ -154,7 +154,7 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 
 	<template id="success">
 		<div class="order-success">
@@ -220,12 +220,12 @@
 				</div>
 				<label class="order__field">
 					<span class="form__label modal__title">Адрес доставки</span>
-					<input name="address" class="form__input" type="text" placeholder="Введите адрес" />
+					<input name="address" required class="form__input" placeholder="Введите адрес" />
 				</label>
 			</div>
 			<div class="modal__actions">
 				<button type="submit" disabled class="button order__button">Далее</button>
-				<span class="form__errors"></span>
+				<span class="form__errors">1</span>
 			</div>
 		</form>
 	</template>
@@ -235,16 +235,23 @@
 			<div class="order">
 				<label class="order__field">
 					<span class="form__label modal__title">Email</span>
-					<input name="email" class="form__input" type="text" placeholder="Введите Email" />
+					<input name="email" class="form__input" required type="email" placeholder="Введите Email" />
 				</label>
 				<label class="order__field">
 					<span class="form__label modal__title">Телефон</span>
-					<input name="phone" class="form__input" type="text" placeholder="+7 (" />
+					<input name="phone" 
+					class="form__input" 
+					type="tel"  
+					inputmode="numeric" 
+					pattern="\+?[0-9\s\-]*"
+					minlength="12" maxlength="16"
+					required 
+					placeholder="+7 (" />
 				</label>
 			</div>
 			<div class="modal__actions">
 				<button type="submit" disabled class="button">Оплатить</button>
-				<span class="form__errors"></span>
+				<span class="form__errors">2</span>
 			</div>
 		</form>
 	</template>
