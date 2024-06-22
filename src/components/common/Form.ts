@@ -30,6 +30,7 @@ export class Form<T> extends Component<IFormState> {
 			const field = target.name as keyof T;
 			const value = target.value;
 			this.events.emit(`${this.container.name}:input`, { field, value });
+			this.buttonState(); 
 		});
 
 		this.container.addEventListener('submit', (e: Event) => {
@@ -40,6 +41,13 @@ export class Form<T> extends Component<IFormState> {
 
 	protected onInputChange(field: keyof T, value: string) {
 		this.events.emit(`${this.container.name}:input`, { field, value });
+	}
+
+	private buttonState() {
+		if (this.container.reportValidity() === false) {
+ // if (this.container.checkValidity() === false) { ///или так, но т.к мы по заданию не настраиваем вывод ошибок, пользоваткль не поймет, что от него хотят, и браузер не подскажет
+			this._submit.disabled = true;
+		}
 	}
 
 	set valid(value: boolean) {

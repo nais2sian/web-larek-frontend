@@ -99,10 +99,8 @@ export class AppState extends Model<IAppState> {
 		return Object.keys(errors).length === 0;
 	}
 
-
 	validateContacts() {
 		const errors: typeof this.contactsErrors = {};
-
 		if (!this.order.email) {
 			errors.email = 'Необходимо указать email';
 		}
