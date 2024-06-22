@@ -53,11 +53,12 @@ export class ViewItem extends Component<ICardItem> {
 	}
 
 	set title(title: string) {
-		this._title.textContent = title;
+		this.setText(this._title, title);
 	}
 
 	set image(image: string) {
-		this._image.src = image;
+		// this._image.src = image;
+		this.setImage(this._image, image);
 	}
 
 	set category(category: string) {

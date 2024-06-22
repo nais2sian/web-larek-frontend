@@ -23,7 +23,7 @@ const cardsContainer = new CardsContainer(
 const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);
 const appData = new AppState({}, events);
 
-/// ПОЛУЧАЕМ ЛОТЫ С СЕРВЕРА
+/// ПОЛУЧАЕМ МАССИВ ТОВАРОВ С СЕРВЕРА
 api
 	.getProductList()
 	.then((productList) => {
@@ -52,11 +52,11 @@ events.on('items:changed', () => {
 });
 
 /// ОТКРЫВАЕМ МОДАЛКУ С ПРЕВЬЮХОЙ
-const PreviewTemplate = ensureElement('#card-preview') as HTMLTemplateElement;
+const previewTemplate = ensureElement('#card-preview') as HTMLTemplateElement;
 events.on('card:select', (event: { id: string }) => {
 	const id = event.id;
 	const card = appData.findCardById(id);
-	const preview = new ViewItem(cloneTemplate(PreviewTemplate), {
+	const preview = new ViewItem(cloneTemplate(previewTemplate), {
 		onClick: () => events.emit('status:chenged', card),
 	});
 	modal.render({
@@ -78,7 +78,7 @@ events.on('status:chenged', (card: ICardItem) => {
 	appData.updateProductStatus(card.id);
 	appData.setBasket(appData.getSelectedCards());
 	basketCounter.textContent = appData.getSelectedCards().length.toString();
-	const preview = new ViewItem(cloneTemplate(PreviewTemplate), {
+	const preview = new ViewItem(cloneTemplate(previewTemplate), {
 		onClick: () => events.emit('status:chenged', card),
 	});
 	modal.render({
@@ -116,6 +116,9 @@ const basketElement = cloneBasketTemplate.querySelector(
 	'.basket'
 ) as HTMLElement;
 
+const basket = new BasketView(basketElement, {
+		onClick: () => events.emit('order:open'),
+	});
 basketButton.addEventListener('click', () => {
 	events.emit('basket:select');
 });
@@ -132,9 +135,6 @@ events.on('basket:select', () => {
 			status: card.status,
 			indexElement: index,
 		});
-	});
-	const basket = new BasketView(basketElement, {
-		onClick: () => events.emit('order:open'),
 	});
 	modal.render({
 		content: basket.items(cardsList),
@@ -188,7 +188,7 @@ events.on('order:submit', () => {
 	});
 });
 
-// / Изменилось состояние валидации формы
+/// Изменилось состояние валидации формы
 events.on('orderErrors:change', (errors: Partial<IOrder>) => {
 	const { address, payment } = errors;
 	order.valid = !address && !payment;
@@ -214,11 +214,15 @@ events.on('contacts:input',
 	}
 );
 
-
 /// Отправлена форма заказа
 const successTemplate = ensureElement(
 	'#success'
 ) as HTMLTemplateElement;
+const success = new Success(cloneTemplate(successTemplate), {
+	onClick: () => {
+		modal.close();
+	},
+});
 events.on('contacts:submit', () => {
 	const items = appData.mybasket;
 	const total = appData.calculateTotalPrice();
@@ -231,13 +235,6 @@ events.on('contacts:submit', () => {
 		.placeOrder(finalOrder)
 		.then((result) => {
 			appData.clearBasket();
-
-			const success = new Success(cloneTemplate(successTemplate), {
-				onClick: () => {
-					modal.close();
-					basketCounter.textContent = appData.mybasket.length.toString();
-				},
-			});
 			modal.render({
 				content: success.render({
 					total: total
