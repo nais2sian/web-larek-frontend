@@ -38,12 +38,7 @@ export class ViewItem extends Component<ICardItem> {
 			}
 		}
 	}
-
-	render(data: Partial<ICardItem>): HTMLElement {
-		Object.assign(this as object, data ?? {});
-		return this.container;
-	}
-
+	
 	set _id(id: string) {
 		this._cardId = id;
 	}
@@ -57,7 +52,6 @@ export class ViewItem extends Component<ICardItem> {
 	}
 
 	set image(image: string) {
-		// this._image.src = image;
 		this.setImage(this._image, image);
 	}
 
